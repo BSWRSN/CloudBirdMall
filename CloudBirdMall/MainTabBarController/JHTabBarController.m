@@ -37,26 +37,26 @@ static JHTabBarController *manager = nil;
 
 
 - (void)initializationAppearance{
-    NSArray * controllerNames = @[@"JHHomeViewController", @"JHClassifyViewController", @"JHShoppingCartViewController", @"JHMineViewController"];
+    NSArray *controllerNames = @[@"JHHomeViewController", @"JHClassifyViewController", @"JHShoppingCartViewController", @"JHMineViewController"];
     
     // 用来传递给标签控制器的数组
-    NSMutableArray * viewControllers = [NSMutableArray array];
+    NSMutableArray *viewControllers = [NSMutableArray array];
     
-    NSArray * controllerTitles = @[@"首页", @"分类", @"购物车", @"我的"];
-    NSArray * normalImages = @[@"home_uncheck",@"classify_uncheck",@"shopping_uncheck", @"mine_uncheck"];
-    NSArray * selectedImages = @[@"home_selected",@"classify_selected",@"shopping_selected", @"mine_selected"];
+    NSArray *controllerTitles = @[@"首页", @"分类", @"购物车", @"我的"];
+    NSArray *normalImages = @[@"home_uncheck",@"classify_uncheck",@"shopping_uncheck", @"mine_uncheck"];
+    NSArray *selectedImages = @[@"home_selected",@"classify_selected",@"shopping_selected", @"mine_selected"];
     
     [controllerNames enumerateObjectsUsingBlock:^(NSString * obj, NSUInteger idx, BOOL *stop) {
-        UIViewController * controller = [[NSClassFromString(obj) alloc] init];
+        UIViewController *controller = [[NSClassFromString(obj) alloc] init];
         
         // 设置导航栏标题
-        controller.title = controllerTitles[idx];
-        UINavigationController * navc = [[UINavigationController alloc] initWithRootViewController:controller];
+//        controller.title = controllerTitles[idx];
+        UINavigationController *navc = [[UINavigationController alloc] initWithRootViewController:controller];
         navc.navigationBar.translucent = NO;
         
-        controller.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:18], NSForegroundColorAttributeName: [UIColor blackColor]};
-        
-        controller.navigationController.navigationBar.tintColor = [UIColor blackColor];
+        controller.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:18], NSForegroundColorAttributeName: [UIColor redColor]};
+//        controller.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+//        controller.navigationController.navigationBar.tintColor = [UIColor blackColor];
         
         [viewControllers addObject:navc];
         
@@ -97,8 +97,8 @@ static JHTabBarController *manager = nil;
         }
     }
     
-    [self setStatusBarBackgroundColor:[UIColor blackColor]];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+//    [self setStatusBarBackgroundColor:[UIColor blackColor]];
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 }
 
 #pragma mark - 设置状态栏颜色

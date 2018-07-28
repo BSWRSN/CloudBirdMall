@@ -27,40 +27,54 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+//    [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self _initializationAppearance];
     [self initAdsImageView];
-    [self initDailyView];
+//    [self initDailyView];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    self.searchTextField.hidden = NO;
+    self.title = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    self.searchTextField.hidden = YES;self.title = nil;
 }
 
 #pragma mark - 初始化外观
 - (void)_initializationAppearance{
     [self.view addSubview:self.collectionView];
-    [self.view addSubview:self.searchTextField];
+    [self.navigationController.navigationBar addSubview:self.searchTextField];
     [self.collectionView addSubview:self.scrollView];
-    [self.collectionView addSubview:self.adsImageView];
+//    [self.collectionView addSubview:self.adsImageView];
     
-    NSArray *classifyArr = @[@"线下体验", @"纳晶水光", @"套装礼盒", @"全部分类"];
+    NSArray *classifyArr = @[@"云套餐", @"纳晶水光", @"云专区", @"合伙人", @"云缴费", @"云钱包", @"VIP专区", @"积分夺宝"];
+    CGFloat with = 0, count = 0;
     for (NSInteger i = 0; i < classifyArr.count; i++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.mj_x = KSCREEN_WIDTH/4 * i;
-        btn.mj_y = CGRectGetMaxY(self.scrollView.frame);
-        btn.mj_w = btn.mj_h = KSCREEN_WIDTH/4;
+        if (with >= KSCREEN_WIDTH) {
+            with = 0;
+            count++;
+            btn.mj_x = with;
+        } else {
+            btn.mj_x = with;
+        }
+        with += KSCREEN_WIDTH/4;
+        btn.mj_y = CGRectGetMaxY(self.scrollView.frame)+count*(KSCREEN_WIDTH/4-20);
+        btn.mj_w = KSCREEN_WIDTH/4;
+        btn.mj_h = KSCREEN_WIDTH/4-20;
         btn.backgroundColor = [UIColor whiteColor];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         btn.titleLabel.font = [UIFont systemFontOfSize:15];
         [btn setTitle:classifyArr[i] forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:classifyArr[i]] forState:UIControlStateNormal];
-        btn.imageEdgeInsets = UIEdgeInsetsMake((btn.mj_h - btn.imageView.mj_h-btn.titleLabel.mj_h -27)/2, (btn.mj_w - btn.imageView.mj_w)/2, (btn.mj_h -btn.imageView.mj_h - btn.titleLabel.mj_h)/2, (btn.mj_w - btn.imageView.mj_w)/2);
-        btn.titleEdgeInsets = UIEdgeInsetsMake(CGRectGetMaxY(btn.imageView.frame)+20, -btn.imageView.mj_w, (btn.mj_h - btn.imageView.mj_h - btn.titleLabel.mj_h -10)/2, 0);
+        [btn setImage:[UIImage imageNamed:classifyArr[1]] forState:UIControlStateNormal];
+        btn.imageEdgeInsets = UIEdgeInsetsMake((btn.mj_h - btn.imageView.mj_h-btn.titleLabel.mj_h -44)/2, (btn.mj_w - btn.imageView.mj_w)/2, (btn.mj_h -btn.imageView.mj_h - btn.titleLabel.mj_h)/2, (btn.mj_w - btn.imageView.mj_w)/2);
+        btn.titleEdgeInsets = UIEdgeInsetsMake(CGRectGetMaxY(btn.imageView.frame)+10, -btn.imageView.mj_w, (btn.mj_h - btn.imageView.mj_h - btn.titleLabel.mj_h -10)/2, 0);
         [btn addTarget:self action:@selector(classifyBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         btn.tag = 277 + i;
         [self.collectionView addSubview:btn];
@@ -112,17 +126,28 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    return 7;
+    if (section == 0 || section == 1) {
+        return 6;
+    } else {
+        return 7;
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     JHGoodsCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UICollectionViewCell" forIndexPath:indexPath];
     
-    cell.imageUrl.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"洗面洁面"]];
-    cell.name.text = @"帅气黄家豪VS女神范朱琪";
-    cell.sales.text = [NSString stringWithFormat:@"销量:%@", @"5297"];
-    cell.price.text = [NSString stringWithFormat:@"¥%@", @"5297.77"];
-    [cell.name sizeToFit];
+    if (indexPath.section == 1) {
+        cell.imageUrl.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"洗面洁面"]];
+        cell.name.hidden = YES;
+        cell.sales.hidden = YES;
+        cell.price.hidden = YES;
+    } else {
+        cell.imageUrl.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"洗面洁面"]];
+        cell.name.text = @"帅气黄家豪VS女神范朱琪";
+        cell.sales.text = [NSString stringWithFormat:@"销量:%@", @"5297"];
+        cell.price.text = [NSString stringWithFormat:@"¥%@", @"5297.77"];
+        [cell.name sizeToFit];
+    }
     
     return cell;
 }
@@ -131,12 +156,15 @@
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         JHCollectionReusableViewHeader *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"JHCollectionReusableViewHeader" forIndexPath:indexPath];
         if (indexPath.section == 0) {
-            header.name.mj_y = CGRectGetMaxY(self.dailyView.frame)+10;
-            header.name.text = @"我的订单";
+            header.name.mj_y = CGRectGetMaxY(self.scrollView.frame)+(KSCREEN_WIDTH/4-20)*2+5;
+            header.name.text = @"VIP活动专区";
+            header.name.textColor = [UIColor redColor];
         } else {
             header.name.mj_y = 0;
             header.name.text = @"我的功能";
+            header.name.textAlignment = NSTextAlignmentCenter;
         }
+        header.line.backgroundColor = [UIColor redColor];
         return header;
     }
     return nil;
@@ -152,15 +180,37 @@
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
-    return UIEdgeInsetsMake(5, 5, 5, 5);
+    if (section == 1) {
+        return UIEdgeInsetsMake(5, 0, 5, 0);
+    } else {
+        return UIEdgeInsetsMake(5, 5, 5, 5);
+    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
     
     if (section == 0) {
-        return CGSizeMake(KSCREEN_WIDTH, CGRectGetMaxY(self.dailyView.frame)+60);
+        return CGSizeMake(KSCREEN_WIDTH, CGRectGetMaxY(self.scrollView.frame)+(KSCREEN_WIDTH/4-20)*2+45);
     } else {
-        return CGSizeMake(KSCREEN_WIDTH, 50);
+        return CGSizeMake(KSCREEN_WIDTH, 40);
+    }
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (indexPath.section == 1) {
+        return CGSizeMake(KSCREEN_WIDTH/3, KSCREEN_WIDTH/3);
+    } else {
+        return CGSizeMake((KSCREEN_WIDTH-20)/3, (KSCREEN_WIDTH-20)/3 +87);
+    }
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
+    
+    if (section == 1) {
+        return 0;
+    } else {
+        return 5;
     }
 }
 
@@ -169,11 +219,10 @@
 - (UICollectionView *)collectionView{
     if (!_collectionView) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake((KSCREEN_WIDTH-20)/3, (KSCREEN_WIDTH-20)/3 +87);
         layout.minimumLineSpacing = 0;
-        layout.minimumInteritemSpacing = 5;
+//        layout.minimumInteritemSpacing = 5;
         
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, KSCREEN_WIDTH, KSCREEN_HEIGHT) collectionViewLayout:layout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, KSCREEN_WIDTH, KSCREEN_HEIGHT-CGRectGetMaxY(self.navigationController.navigationBar.frame)) collectionViewLayout:layout];
         _collectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
@@ -186,24 +235,19 @@
 
 - (UITextField *)searchTextField{
     if (!_searchTextField) {
-        _searchTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame)+7, KSCREEN_WIDTH-20, 36)];
+        _searchTextField = [[UITextField alloc] initWithFrame:CGRectMake(20, 5, KSCREEN_WIDTH-40, 30)];
         _searchTextField.backgroundColor = [UIColor whiteColor];
         _searchTextField.placeholder = @"搜索";
-        _searchTextField.leftView = [JH_sharedManager textFieldLeftViewWithText:nil imageStr:@"搜索" width:44 height:36];
+        _searchTextField.leftView = [JH_sharedManager textFieldLeftViewWithText:nil imageStr:@"搜索" width:44 height:30];
         _searchTextField.leftViewMode = UITextFieldViewModeAlways;
-        _searchTextField.layer.cornerRadius = 18;
-        _searchTextField.layer.masksToBounds = YES;
-        
-        UIImageView *backgroundImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame), KSCREEN_WIDTH, 50)];
-        backgroundImage.image = [UIImage imageNamed:@"顶部透明阴影"];
-        [self.view addSubview:backgroundImage];
+        _searchTextField.borderStyle = UITextBorderStyleRoundedRect;
     }
     return _searchTextField;
 }
 
 - (UIScrollView *)scrollView{
     if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, KSCREEN_WIDTH, 177)];
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, KSCREEN_WIDTH, 135*JHVerticalFlexibleRatio())];
         _scrollView.contentSize = CGSizeMake(KSCREEN_WIDTH * 2, 0);
     }
     return _scrollView;

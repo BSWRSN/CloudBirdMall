@@ -174,10 +174,12 @@ static NSString *const kUICollectionViewCellIdentifier = @"UICollectionViewCellI
 - (UIButton *)shoppingBtn{
     if (!_shoppingBtn) {
         _shoppingBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _shoppingBtn.frame = CGRectMake(0, KSCREEN_HEIGHT-tabBar_height-CGRectGetMaxY(self.navigationController.navigationBar.frame), KSCREEN_WIDTH, 49);
+        _shoppingBtn.frame = CGRectMake(7, KSCREEN_HEIGHT-tabBar_height-CGRectGetMaxY(self.navigationController.navigationBar.frame), KSCREEN_WIDTH-14, 42);
         _shoppingBtn.backgroundColor = [UIColor redColor];
         [_shoppingBtn setTitle:@"立即购买" forState:UIControlStateNormal];
         [_shoppingBtn addTarget:self action:@selector(shoppingBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        _shoppingBtn.layer.cornerRadius = 7;
+        _shoppingBtn.layer.masksToBounds = YES;
     }
     return _shoppingBtn;
 }

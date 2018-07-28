@@ -1096,6 +1096,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2S7F69S242;
 				GCC_PREFIX_HEADER = CloudBirdMall/PrefixHeader.pch;
 				INFOPLIST_FILE = CloudBirdMall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1114,6 +1115,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2S7F69S242;
 				GCC_PREFIX_HEADER = CloudBirdMall/PrefixHeader.pch;
 				INFOPLIST_FILE = CloudBirdMall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

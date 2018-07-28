@@ -185,9 +185,9 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
     
     if (section == 0) {
-        return CGSizeMake(KSCREEN_WIDTH, background_height +50);
+        return CGSizeMake(KSCREEN_WIDTH, background_height +40);
     } else {
-        return CGSizeMake(KSCREEN_WIDTH, 50);
+        return CGSizeMake(KSCREEN_WIDTH, 40);
     }
 }
 

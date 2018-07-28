@@ -11,5 +11,6 @@
 @interface JHCollectionReusableViewHeader : UICollectionReusableView
 
 @property (nonatomic, strong) UILabel *name;
+@property (nonatomic, strong) UILabel *line;
 
 @end
